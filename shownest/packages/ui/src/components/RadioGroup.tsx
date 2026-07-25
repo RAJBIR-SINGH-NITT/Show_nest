@@ -2,13 +2,26 @@ import * as React from 'react'
 
 export interface RadioGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
+  value?: string
+  onValueChange?: (value: string) => void
 }
 
 export const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(
-  ({ className = '', children, ...props }, ref) => {
+  ({ className = '', children, value, onValueChange, ...props }, ref) => {
     return (
       <div ref={ref} className={`space-y-2 ${className}`} {...props}>
-        {children}
+        {React.Children.map(children, (child) => {
+          if (React.isValidElement(child)) {
+            return React.cloneElement(child, {
+              checked: value !== undefined ? child.props.value === value : child.props.checked,
+              onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+                if (child.props.onChange) child.props.onChange(e)
+                if (onValueChange) onValueChange(e.target.value)
+              },
+            } as any)
+          }
+          return child
+        })}
       </div>
     )
   }
@@ -18,8 +31,9 @@ RadioGroup.displayName = 'RadioGroup'
 
 export interface RadioGroupItemProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   id: string
-  label: string
+  label?: string
   description?: string
+  value?: string
 }
 
 export const RadioGroupItem = React.forwardRef<HTMLInputElement, RadioGroupItemProps>(
@@ -32,22 +46,24 @@ export const RadioGroupItem = React.forwardRef<HTMLInputElement, RadioGroupItemP
             type="radio"
             id={id}
             className={`
-              w-4 h-4 text-blue-600 border-gray-300
-              focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+              w-4 h-4 text-[#ba0036] border-[#e5bdbe]
+              focus:ring-2 focus:ring-[#ba0036] focus:ring-offset-2
               cursor-pointer
               ${className}
             `}
             {...props}
           />
         </div>
-        <div className="ml-3">
-          <label htmlFor={id} className="text-sm font-medium text-gray-700 cursor-pointer">
-            {label}
-          </label>
-          {description && (
-            <p className="text-xs text-gray-500">{description}</p>
-          )}
-        </div>
+        {label && (
+          <div className="ml-3">
+            <label htmlFor={id} className="text-sm font-medium text-[#281718] cursor-pointer">
+              {label}
+            </label>
+            {description && (
+              <p className="text-xs text-[#5c3f41]">{description}</p>
+            )}
+          </div>
+        )}
       </div>
     )
   }

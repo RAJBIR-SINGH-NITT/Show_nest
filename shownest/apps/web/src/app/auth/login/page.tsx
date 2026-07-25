@@ -41,8 +41,6 @@ export default function LoginPage() {
     setError(null)
     
     // Placeholder for authentication logic
-    console.log('Login attempt:', data)
-    
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false)
@@ -51,15 +49,15 @@ export default function LoginPage() {
   }
 
   const handleGoogleSignIn = () => {
-    console.log('Google Sign In clicked')
+    // Placeholder for Google Sign In
   }
 
   const handleAppleSignIn = () => {
-    console.log('Apple Sign In clicked')
+    // Placeholder for Apple Sign In
   }
 
   const handleGuestContinue = () => {
-    console.log('Continue as Guest clicked')
+    // Placeholder for guest checkout
   }
 
   return (
@@ -226,7 +224,7 @@ export default function LoginPage() {
           {/* Create Account Link */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link
                 href="/auth/register"
                 className="font-medium text-blue-600 hover:text-blue-700"

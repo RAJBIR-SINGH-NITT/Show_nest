@@ -56,8 +56,6 @@ export default function PaymentPage() {
 
   const handlePayNow = () => {
     setIsProcessing(true)
-    console.log('Processing payment with method:', paymentMethod)
-    console.log('ShowtimeId:', showtimeId)
     
     // Placeholder for payment processing
     setTimeout(() => {

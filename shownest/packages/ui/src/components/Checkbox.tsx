@@ -1,12 +1,19 @@
 import * as React from 'react'
 
-export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  label?: string
+export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type' | 'onChange'> {
+  label?: React.ReactNode
   error?: string
+  onCheckedChange?: (checked: boolean) => void
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className = '', id, label, error, checked, ...props }, ref) => {
+  ({ className = '', id, label, error, checked, onCheckedChange, onChange, ...props }, ref) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (onChange) onChange(e)
+      if (onCheckedChange) onCheckedChange(e.target.checked)
+    }
+
     return (
       <div className="flex items-start">
         <div className="flex items-center h-5">
@@ -15,9 +22,10 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
             id={id}
             ref={ref}
             checked={checked}
+            onChange={handleChange}
             className={`
-              w-4 h-4 text-blue-600 border-gray-300 rounded
-              focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+              w-4 h-4 text-[#ba0036] border-[#e5bdbe] rounded
+              focus:ring-2 focus:ring-[#ba0036] focus:ring-offset-2
               cursor-pointer
               ${error ? 'border-red-500 focus:ring-red-500' : ''}
               ${className}
@@ -31,7 +39,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
           <div className="ml-3">
             <label
               htmlFor={id}
-              className="text-sm text-gray-700 cursor-pointer"
+              className="text-sm text-[#281718] cursor-pointer font-medium"
             >
               {label}
             </label>

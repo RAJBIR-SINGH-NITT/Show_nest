@@ -72,9 +72,6 @@ export default function ReviewPage() {
 
   const handleContinueToPayment = () => {
     setIsProcessing(true)
-    console.log('Proceeding to payment with showtimeId:', showtimeId)
-    console.log('Customer email:', customerEmail)
-    console.log('Customer phone:', customerPhone)
     
     // Placeholder for payment flow
     setTimeout(() => {
