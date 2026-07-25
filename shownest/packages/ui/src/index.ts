@@ -1,2 +1,6 @@
 export { Button } from './components/Button'
+export { Input } from './components/Input'
+export { Card, CardHeader, CardContent } from './components/Card'
+export { Label } from './components/Label'
+export { Separator } from './components/Separator'
 export { tokens } from './tokens'
