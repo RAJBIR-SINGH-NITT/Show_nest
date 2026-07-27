@@ -73,7 +73,7 @@ const recentBookings = [
   },
 ]
 
-export default function AdminDashboardPage() {
+export function AdminDashboardContent() {
   const metrics = getDashboardMetrics()
   const activities = getDashboardActivities()
   const notifications = getDashboardNotifications()

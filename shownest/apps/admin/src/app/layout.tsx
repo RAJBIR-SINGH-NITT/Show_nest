@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import './globals.css'
+import { AdminLayout } from '@/components/admin'
 
 export const metadata: Metadata = {
   title: 'ShowNest Admin',
@@ -12,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AdminLayout>{children}</AdminLayout>
+      </body>
     </html>
   )
 }
