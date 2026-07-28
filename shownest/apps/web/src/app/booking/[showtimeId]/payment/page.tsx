@@ -60,6 +60,7 @@ export default function PaymentPage() {
     // Placeholder for payment processing
     setTimeout(() => {
       setIsProcessing(false)
+      window.location.href = '/booking/confirmation/mock-booking-id'
     }, 2000)
   }
 
@@ -119,7 +120,6 @@ export default function PaymentPage() {
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Payment</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Payment Methods */}
           <div className="lg:col-span-2 space-y-6">
             {/* Booking Summary */}
             <Card>

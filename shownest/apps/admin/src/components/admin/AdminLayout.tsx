@@ -24,6 +24,16 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     }
   }, [])
 
+  if (pathname === '/login') {
+    return (
+      <AdminRoleProvider>
+        <div className="min-h-screen bg-[#fff8f7] text-[#281718] flex items-center justify-center">
+          {children}
+        </div>
+      </AdminRoleProvider>
+    )
+  }
+
   return (
     <AdminRoleProvider>
     <div className="min-h-screen bg-[#fff8f7] text-[#281718]">

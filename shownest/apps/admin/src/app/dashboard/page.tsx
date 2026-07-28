@@ -1,3 +1,6 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {
   AdminCard,
@@ -21,56 +24,12 @@ import {
   getUpcomingEvents,
 } from '@/services/admin/dashboardService'
 
-const bookingColumns = [
-  { key: 'id', label: 'Booking ID' },
-  { key: 'customer', label: 'Customer' },
-  { key: 'item', label: 'Movie/Event' },
-  { key: 'venue', label: 'Venue' },
-  { key: 'showtime', label: 'Showtime' },
-  { key: 'seats', label: 'Seats' },
-  { key: 'amount', label: 'Amount' },
+const vendorColumns = [
+  { key: 'id', label: 'Vendor ID' },
+  { key: 'username', label: 'Username' },
+  { key: 'email', label: 'Email' },
+  { key: 'role', label: 'Role' },
   { key: 'status', label: 'Status' },
-  { key: 'time', label: 'Booking Time' },
-  { key: 'action', label: 'Actions' },
-]
-
-const recentBookings = [
-  {
-    id: 'B-1042',
-    customer: 'Riya Sharma',
-    item: 'The Grand Adventure',
-    venue: 'PVR Phoenix',
-    showtime: '8:30 PM',
-    seats: '2',
-    amount: '₹1,500',
-    status: <StatusBadge status="Confirmed" />,
-    time: '08:24',
-    action: <Link href="/admin/bookings" className="text-sm font-semibold text-[#ba0036]">View</Link>,
-  },
-  {
-    id: 'B-1043',
-    customer: 'Arjun Rao',
-    item: 'Neon Horizon Live',
-    venue: 'Jio World Garden',
-    showtime: '7:00 PM',
-    seats: '4',
-    amount: '₹3,200',
-    status: <StatusBadge status="Pending" />,
-    time: '09:11',
-    action: <Link href="/admin/bookings" className="text-sm font-semibold text-[#ba0036]">View</Link>,
-  },
-  {
-    id: 'B-1044',
-    customer: 'Pooja Nair',
-    item: 'Sports Finale',
-    venue: 'Wankhede Stadium',
-    showtime: '6:45 PM',
-    seats: '6',
-    amount: '₹7,800',
-    status: <StatusBadge status="Refund Pending" />,
-    time: '10:02',
-    action: <Link href="/admin/refunds" className="text-sm font-semibold text-[#ba0036]">Review</Link>,
-  },
 ]
 
 export default function AdminDashboardPage() {
@@ -80,6 +39,46 @@ export default function AdminDashboardPage() {
   const upcomingEvents = getUpcomingEvents()
   const health = getServiceHealth()
   const quickActions = getQuickActions()
+
+  const [vendors, setVendors] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchVendors = async () => {
+      try {
+        const token = localStorage.getItem('adminToken')
+        const response = await fetch('/api/admin/vendors', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to load vendors')
+        }
+
+        const data = await response.json()
+        
+        // Map data to DataTable rows format
+        const formattedVendors = data.map((v: any) => ({
+          id: v.id,
+          username: v.username,
+          email: v.email,
+          role: <span className="capitalize px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full text-xs font-semibold">{v.role}</span>,
+          status: <StatusBadge status="Active" />,
+        }))
+
+        setVendors(formattedVendors)
+      } catch (err: any) {
+        setError(err.message)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchVendors()
+  }, [])
 
   return (
     <div className="space-y-6">
@@ -140,13 +139,19 @@ export default function AdminDashboardPage() {
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[1.4fr_0.9fr]">
-        <AdminCard title="Recent Bookings" description="Operational overview of the latest reservations.">
+        <AdminCard title="Registered System Vendors" description="Database overview of active partner vendor accounts.">
           <div className="space-y-4">
-            <div className="flex flex-wrap gap-3">
-              <input className="min-w-[220px] flex-1 rounded-full border border-[#e5bdbe] bg-[#fff8f7] px-4 py-2 text-sm outline-none" placeholder="Search bookings" />
-              <button className="rounded-full border border-[#e5bdbe] bg-white px-3 py-2 text-sm text-[#5c3f41]">Filter</button>
-            </div>
-            <DataTable columns={bookingColumns} rows={recentBookings} />
+            {error && (
+              <div className="p-3 bg-[#fff8f7] border border-[#e5bdbe] rounded-2xl text-sm text-[#ba0036]">
+                Error loading vendors: {error}
+              </div>
+            )}
+            
+            {isLoading ? (
+              <div className="text-sm text-gray-500 py-4 text-center">Loading vendor directory from MongoDB...</div>
+            ) : (
+              <DataTable columns={vendorColumns} rows={vendors} />
+            )}
           </div>
         </AdminCard>
 

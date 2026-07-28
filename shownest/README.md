@@ -20,6 +20,8 @@ This is a Turborepo monorepo containing:
 
 See the architecture blueprint in `docs/architecture/shownest_blueprint.md` for complete system design documentation.
 
+For database setup (MongoDB replica set) and backend API configuration, refer to the [API README](file:///C:/Users/NETHRA%20R/Show_nest/shownest/apps/api/README.md).
+
 ## Development
 
 ```bash

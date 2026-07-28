@@ -56,3 +56,6 @@ Thumbs.db
 
 # Prisma/Drizzle
 prisma/migrations/*/migration.sql
+
+# Local Database Folder
+.mongodb_data/
