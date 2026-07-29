@@ -38,7 +38,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     <AdminRoleProvider>
     <div className="min-h-screen bg-[#fff8f7] text-[#281718]">
       <div className="flex min-h-screen flex-col lg:flex-row">
-        <div className="hidden lg:block">
+        <div className="hidden lg:block h-screen sticky top-0">
           <Sidebar collapsed={collapsed} onToggle={() => setCollapsed((value) => !value)} />
         </div>
 

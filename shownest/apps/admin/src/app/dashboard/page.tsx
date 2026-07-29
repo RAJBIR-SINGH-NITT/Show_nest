@@ -45,9 +45,14 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    const token = localStorage.getItem('adminToken')
+    if (!token) {
+      window.location.href = '/login'
+      return
+    }
+
     const fetchVendors = async () => {
       try {
-        const token = localStorage.getItem('adminToken')
         const response = await fetch('/api/admin/vendors', {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -55,6 +60,12 @@ export default function AdminDashboardPage() {
         })
 
         if (!response.ok) {
+          if (response.status === 401 || response.status === 403) {
+            localStorage.removeItem('adminToken')
+            localStorage.removeItem('adminUser')
+            window.location.href = '/login'
+            return
+          }
           throw new Error('Failed to load vendors')
         }
 

@@ -36,7 +36,7 @@ export default function AdminLoginPage() {
       }
 
       // Save token & user details
-      localStorage.setItem('adminToken', data.accessToken)
+      localStorage.setItem('adminToken', data.token || data.accessToken)
       localStorage.setItem('adminUser', JSON.stringify(data.user))
 
       // Redirect to dashboard

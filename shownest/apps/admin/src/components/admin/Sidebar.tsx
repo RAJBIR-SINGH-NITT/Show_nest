@@ -68,8 +68,14 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
     }))
     .filter((item) => allowedIds.includes(item.id) || (item.children?.length ?? 0) > 0)
 
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken')
+    localStorage.removeItem('adminUser')
+    window.location.href = '/login'
+  }
+
   return (
-    <aside className={`flex h-full flex-col border-r border-[#e5bdbe] bg-[#fff8f7] ${collapsed ? 'w-20' : 'w-72'}`}>
+    <aside className={`flex h-screen flex-col border-r border-[#e5bdbe] bg-[#fff8f7] ${collapsed ? 'w-20' : 'w-72'}`}>
       <div className="flex items-center justify-between border-b border-[#e5bdbe] px-4 py-4">
         {!collapsed ? (
           <div>
@@ -94,6 +100,17 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
           <SidebarItem key={item.id} item={item} pathname={pathname} collapsed={collapsed} />
         ))}
       </nav>
+
+      <div className="border-t border-[#e5bdbe] p-3">
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-red-600 hover:bg-[#ffeef0] transition"
+        >
+          <span className="text-lg">🚪</span>
+          {!collapsed && <span>Logout</span>}
+        </button>
+      </div>
     </aside>
   )
 }
