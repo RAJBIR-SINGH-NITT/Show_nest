@@ -1,4 +1,4 @@
-# ShowNest — End-to-End Ticketing Platform
+# ShowNest - End-to-End Ticketing Platform
 
 A production-grade architecture and implementation blueprint for a movies/events/sports ticket-booking platform.
 
